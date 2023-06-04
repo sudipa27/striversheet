@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        int head=0, tail=0, ans=0;
+        int c[26]={};
+        for(int head=0;head<s.length();head++)
+        {
+             c[s[head]-'A']++;
+             while((head-tail+1 -*max_element(c,c+26))>k)
+             {
+                 c[s[tail]-'A']--;
+                 tail++;
+             }
+             ans=max(ans, head-tail+1);
+        }
+        return ans;
+    }
+};
