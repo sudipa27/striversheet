@@ -25,7 +25,7 @@ class Solution
     int FindMaxSum(int arr[], int n)
     {
         vector<int> dp(n,-1);
-        dp[0]=arr[0];
+       /* dp[0]=arr[0];
         for(int i=1;i<n;i++)
         {
             int take = arr[i] ;
@@ -36,7 +36,22 @@ class Solution
             int nottake = dp[i-1];
             dp[i]=max(take,nottake);
         }
-        return dp[n-1];
+        return dp[n-1];*/
+        int prev=arr[0];
+        int prev2=0,curr=0;
+        for(int i=1;i<n;i++)
+        {
+            int take = arr[i];
+            if(i>1)
+            {
+                take+=prev2;
+            }
+            int nottake = 0 + prev;
+            int curri = max(take,nottake);
+            prev2=prev;
+            prev=curri;
+        }
+        return prev;
     }
 };
 
