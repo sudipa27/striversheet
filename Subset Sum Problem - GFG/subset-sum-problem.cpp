@@ -33,8 +33,27 @@ bool func(int ind, int target, vector<vector<int>> &dp, vector<int>&arr)
 }
     bool isSubsetSum(vector<int>arr, int sum){
         int n=arr.size();
-        vector<vector<int>> dp(n, vector<int>(sum+1,-1));
-        return func(n-1,sum,dp,arr);
+        vector<vector<bool>> dp(n, vector<bool>(sum+1,false));
+    for(int i=0;i<n;i++)
+    {
+        dp[i][0]=true;
+    }
+    if(arr[0]<=sum){
+   dp[0][arr[0]]=true;}
+   for(int i=1;i<n;i++)
+   {
+       for(int j=1;j<=sum;j++)
+       {
+           bool nottake = dp[i-1][j];
+           bool take=false;
+           if(arr[i]<=j)
+           {
+               take=dp[i-1][j-arr[i]];
+           }
+           dp[i][j] = take||nottake;
+       }
+   }
+        return dp[n-1][sum];
     }
 };
 
