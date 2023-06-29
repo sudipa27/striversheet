@@ -3,41 +3,77 @@
 using namespace std;
 
 // } Driver Code Ends
+
+class disjointSet{
+    vector<int>size,parent;
+    public:
+    disjointSet(int n)
+    {
+        size.resize(n+1,0);
+        parent.resize(n+1);
+        for(int i=0;i<=n;i++)
+        {
+            parent[i]=i;
+        }
+    }
+    int findUPar(int node)
+    {
+        if(parent[node]==node)
+        {
+            return node;
+        }
+        return parent[node]=findUPar(parent[node]);
+    }
+    void unionBySize(int u, int v)
+    {
+        int pu = findUPar(u);
+        int pv = findUPar(v);
+        if(pu==pv){
+            return;
+        }
+        if(size[pu]<size[pv])
+        {
+            parent[pu]=pv;
+            size[pv]+=size[pu];
+        }
+        else
+        {
+            parent[pv]=pu;
+            size[pu]+=size[pv];
+        }
+    }
+};
 class Solution
 {
 	public:
 	//Function to find sum of weights of edges of the Minimum Spanning Tree.
     int spanningTree(int V, vector<vector<int>> adj[])
     {
-        priority_queue<pair<int,int>, vector<pair<int,int>>, greater<pair<int,int>>> pq;
-        vector<int> vis(V,0);
-        pq.push({0,0});
-        int sum=0;
-        while(!pq.empty())
+        disjointSet ds(V);
+        vector<pair<int,pair<int,int>>> edges;
+        for(int i=0;i<V;i++)
         {
-            auto it = pq.top();
-            pq.pop();
-            int node = it.second;
-            int wt= it.first;
-            if(vis[node]==1)
+            for(auto it : adj[i])
             {
-                continue;
-            }
-            vis[node]=1;
-            sum+=wt;
-            for(auto it : adj[node])
-            {
-                int adjNode=it[0];
-                int edW= it[1];
-                if(!vis[adjNode])
-                {
-                    pq.push({edW,adjNode});
-                }
+                edges.push_back({it[1],{i,it[0]}});
             }
         }
-        return sum;
-    }
-};
+        sort(edges.begin(),edges.end());
+        int netWt =0;
+        for(auto it : edges)
+        {
+            int wt= it.first;
+            int u = it.second.first;
+            int v = it.second.second;
+            if(ds.findUPar(u)!=ds.findUPar(v))
+            {
+                netWt+=wt;
+                ds.unionBySize(u,v);
+            }
+        }
+    
+    return netWt;
+}};
 
 //{ Driver Code Starts.
 
