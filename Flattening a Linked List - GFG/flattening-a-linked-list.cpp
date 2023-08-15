@@ -113,37 +113,36 @@ struct Node{
     the flattened linked list. */
     Node* merge(Node*a, Node*b)
     {
-        Node*temp=new Node(0);
-        Node *res=temp;
+        Node*tmp=new Node(0);
+        Node*res= tmp;
         while(a!=NULL && b!=NULL)
         {
             if(a->data<b->data)
             {
-                temp->bottom = a;
-                temp=temp->bottom;
+                tmp->bottom = a;
+                tmp=tmp->bottom;
                 a=a->bottom;
             }
             else
             {
-                temp->bottom = b;
-                temp=temp->bottom;
+                tmp->bottom = b;
+                tmp=tmp->bottom;
                 b=b->bottom;
             }
         }
-        if(a) temp->bottom=a;
-        else
-        {
-            temp->bottom=b;
+        if(a) tmp->bottom =a;
+        else{
+            tmp->bottom =b;
         }
         return res->bottom;
     }
 Node *flatten(Node *root)
 {
-   if(root==NULL || root->next==NULL)
+   if(root==NULL || root->next ==NULL)
    {
        return root;
    }
-   root->next=flatten(root->next);
+   root->next = flatten(root->next);
    root = merge(root,root->next);
    return root;
 }
