@@ -5,25 +5,26 @@ using namespace std;
 // } Driver Code Ends
 class Solution
 {
-    public:
-    //Function to find the maximum number of meetings that can
-    //be performed in a meeting room.
-    struct meeting{
+    struct meeting 
+    {
         int start;
         int end;
         int pos;
     };
-    bool static comparator(struct meeting m1, meeting m2)
+    public:
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    static bool cmp(meeting a, meeting b)
     {
-        if(m1.end<m2.end)
+        if(a.end<b.end)
         {
             return true;
         }
-        else if(m1.end>m2.end)
+        else if(a.end>b.end)
         {
             return false;
         }
-        else if(m1.pos<m2.pos)
+        else if(a.pos<b.pos)
         {
             return true;
         }
@@ -31,26 +32,27 @@ class Solution
     }
     int maxMeetings(int start[], int end[], int n)
     {
-        struct meeting meet[n];
-        for(int i=0;i<n;i++)
+    struct meeting meet[n];
+    for(int i=0;i<n;i++)
+    {
+        meet[i].start=start[i];
+        meet[i].end = end[i];
+        meet[i].pos=i+1;
+    }
+    sort(meet,meet+n,cmp);
+    vector<int> ans;
+    int limit = meet[0].end;
+    ans.push_back(meet[0].pos);
+    for(int i=0;i<n;i++)
+    {
+        if(meet[i].start > limit)
         {
-            meet[i].start=start[i];
-            meet[i].end = end[i];
-            meet[i].pos = i+1;
+            limit = meet[i].end;
+            ans.push_back(meet[i].pos);
         }
-        sort(meet,meet+n,comparator);
-        vector<int> ans;
-        int limit = meet[0].end;
-        ans.push_back(meet[0].pos);
-        for(int i=0;i<n;i++)
-        {
-            if(meet[i].start>limit)
-            {
-                limit=meet[i].end;
-                ans.push_back(meet[i].pos);
-            }
-        }
-        return ans.size();
+    }
+    return ans.size();
+        // Your code here
     }
 };
 
