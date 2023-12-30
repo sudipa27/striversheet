@@ -6,22 +6,24 @@ using namespace std;
 class Solution
 {
 public:
- void subsetSumsHelper(int ind, vector < int > & arr, int n, vector < int > & ans, int sum) {
-      if (ind == n) {
+void func(int ind, vector<int>&arr, vector<int>&ans, int N, int sum)
+{
+    if(ind==arr.size())
+    {
         ans.push_back(sum);
         return;
-      }
-      //element is picked
-      subsetSumsHelper(ind + 1, arr, n, ans, sum + arr[ind]);
-      //element is not picked
-      subsetSumsHelper(ind + 1, arr, n, ans, sum);
     }
+    //not_take
+    func(ind+1,arr,ans,N,sum);
+    //take
+    func(ind+1,arr,ans,N,sum+arr[ind]);
+}
     vector<int> subsetSums(vector<int> arr, int N)
     {
-        vector < int > ans;
-    subsetSumsHelper(0, arr, N, ans, 0);
-    sort(ans.begin(), ans.end());
-    return ans;
+        vector<int> ans;
+        func(0,arr,ans,N,0);
+        return ans;
+        // Write Your Code here
     }
 };
 
